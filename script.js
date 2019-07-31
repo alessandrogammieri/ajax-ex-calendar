@@ -5,7 +5,12 @@ Il calendario partirà da gennaio 2018 e si concluderà a dicembre
 2018 (unici dati disponibili sull’API). */
 
 $( document ).ready(function () {
-
   
+
+
+
+
+
+
 
 });

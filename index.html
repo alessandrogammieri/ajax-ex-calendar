@@ -8,9 +8,24 @@
     <title>Calendar</title>
   </head>
   <body>
+    <div class="container">
+      <h1></h1>
+      <div class="bottoni">
+        <button id="prev">Precedente</button>
+        <button id="next">Successivo</button>
+      </div>
+      <div class="giorni">
+        <ul>
 
-    
-
+        </ul>
+      </div>
+    </div>
+    <!-- Template Handlebars -->
+    <script id="template" type="text/x-handlebars-template">
+      <li>
+        {{giorno}}
+      </li>
+    </script>
     <!-- Script di JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Script di Handlebars -->
