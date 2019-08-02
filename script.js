@@ -22,7 +22,7 @@ $( document ).ready(function () {
       alert("Siamo spiacenti, non puoi visualizzare le festività del 2019")
     } else {
       $(".giorni ul").html("");
-      data = data.add(1, 'months');
+      data = data.add(1, "months");
       month = month + 1;
       listaMese(data);
       holidayDate(data);
@@ -35,7 +35,7 @@ $( document ).ready(function () {
       alert("Siamo spiacenti, non puoi visualizzare le festività del 2017")
     } else {
       $(".giorni ul").html("");
-      data = data.subtract(1, 'months');
+      data = data.subtract(1, "months");
       month = month - 1;
       listaMese(data);
       holidayDate(data);
