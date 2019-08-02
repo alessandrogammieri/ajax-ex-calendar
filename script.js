@@ -7,47 +7,79 @@ Il calendario partirà da gennaio 2018 e si concluderà a dicembre
 $( document ).ready(function () {
   // Dichiaro una variabile con giorno fisso 1 Gennaio 2018
   var data = moment("2018-01-01");
-  // Stampo Gennaio 2018
-  $(".container h1").text(data.format("MMMM YYYY"));
-  // Creo il clone del template con Handlebars
-  var source = $("#template").html();
-  var template = Handlebars.compile(source);
-  // Dichiaro una variabile per il numero dei giorni in gennaio
-  var days = moment("2018-01").daysInMonth();
-  // Cicliamo per 31 volte
-  for (var i = 1; i <= days; i++) {
-    // Dichiaro un variabile con ogni giorno di Gennaio che cicla
-    var mese = moment([2018, 0, i]).format("ddd DD MM YYYY");
-    // Stampo l'input a schermo
-    var context = {giorno: mese, holi: moment([2018, 0, i]).format("YYYY-MM-DD")};
-    $(".giorni ul").append(template(context));
+  var anno = data.format("YYYY");
+  var month = parseInt(data.format("M")) - 1;
+
+  listaMese();
+  holidayDate();
+
+  $("#next").click(function() {
+    $(".giorni ul").html("");
+    data = data.add(1, 'months');
+    month = month + 1;
+    console.log(data);
+    listaMese();
+    holidayDate();
+  });
+
+
+  $('#prev').click(function() {
+    $(".giorni ul").html("");
+    data = data.subtract(1, 'months');
+    month = month - 1;
+    console.log(data);
+    listaMese();
+    holidayDate();
+  });
+
+  // Funzione per generare la lista dei giorni del mese
+  function listaMese () {
+    // Stampo Gennaio 2018
+    $(".container h1").text(data.format("MMMM YYYY"));
+    // Creo il clone del template con Handlebars
+    var source = $("#template").html();
+    var template = Handlebars.compile(source);
+    // Dichiaro una variabile per il numero dei giorni in gennaio
+    var days = data.daysInMonth();
+    // Cicliamo per 31 volte
+    for (var i = 1; i <= days; i++) {
+      // Dichiaro un variabile con ogni giorno di Gennaio che cicla
+      var mese = moment([anno, month, i]).format("ddd DD MM YYYY");
+      // Stampo l'input a schermo
+      var context = {giorno: mese, holi: moment([anno, month, i]).format("YYYY-MM-DD")};
+      $(".giorni ul").append(template(context));
+    }
   }
 
-  // Richiediamo via ajax all'API le festività di Gennaio
-  $.ajax({
-    url : "https://flynn.boolean.careers/exercises/api/holidays",
-    method: "GET",
-    data: {"year": "2018", "month": 0},
-    success: function (data) {
-      if (data.success) {
-        // Dichiaro una variabile con i risultati della chiamata
-        var holiday = data.response;
-        // Cicliamo il nostro elenco delle festività
-        for (var i = 0; i < holiday.length; i++) {
-          // Creiamo una variabile per singola festività
-          var objholiday = holiday[i];
-          // Creiamo una variabile per identificare l'attributo nell'html
-          var hellfest = $("li[dateref='" + objholiday.date + "']");
-          if (hellfest) {
-            hellfest.append(", " + objholiday.name);
-            hellfest.addClass("orange");
+  // Funzione per generare la lista delle festività del mese
+  function holidayDate () {
+    // Richiediamo via ajax all'API le festività di Gennaio
+    $.ajax({
+      url : "https://flynn.boolean.careers/exercises/api/holidays",
+      method: "GET",
+      data: {"year": "2018", "month": month},
+      success: function (data) {
+        if (data.success) {
+          // Dichiaro una variabile con i risultati della chiamata
+          var holiday = data.response;
+          // Cicliamo il nostro elenco delle festività
+          for (var i = 0; i < holiday.length; i++) {
+            // Creiamo una variabile per singola festività
+            var objholiday = holiday[i];
+            // Creiamo una variabile per identificare l'attributo nell'html
+            var hellfest = $("li[dateref='" + objholiday.date + "']");
+            // Se true facciamo inserimento in html
+            if (hellfest) {
+              hellfest.append(", " + objholiday.name);
+              hellfest.addClass("orange");
+            }
           }
         }
+      },
+      error: function (errore) {
+        alert ("C'è stato un errore: " + errore);
       }
-    },
-    error: function (errore) {
-      alert ("C'è stato un errore: " + errore);
-    }
-  });
+    });
+  }
 
 });
