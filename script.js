@@ -7,29 +7,39 @@ Il calendario partirà da gennaio 2018 e si concluderà a dicembre
 $( document ).ready(function () {
   // Dichiaro una variabile con giorno fisso 1 Gennaio 2018
   var data = moment("2018-01-01");
+  // Dichiaro una variabile per l'anno
   var anno = data.format("YYYY");
+  // Dichiaro una variabile per il mese che parte da 0
   var month = parseInt(data.format("M")) - 1;
 
-  listaMese();
-  holidayDate();
+  // Richiamo le due funzioni per partire con il mese di Gennaio
+  listaMese(data);
+  holidayDate(data);
 
+  // Funzione che gestisce il pulsante Next
   $("#next").click(function() {
-    $(".giorni ul").html("");
-    data = data.add(1, 'months');
-    month = month + 1;
-    console.log(data);
-    listaMese();
-    holidayDate();
+    if (month > 10) {
+      alert("Siamo spiacenti, non puoi visualizzare le festività del 2019")
+    } else {
+      $(".giorni ul").html("");
+      data = data.add(1, 'months');
+      month = month + 1;
+      listaMese(data);
+      holidayDate(data);
+    }
   });
 
-
+  // Funzione che gestisce il pulsante Prev
   $('#prev').click(function() {
-    $(".giorni ul").html("");
-    data = data.subtract(1, 'months');
-    month = month - 1;
-    console.log(data);
-    listaMese();
-    holidayDate();
+    if (month === 0) {
+      alert("Siamo spiacenti, non puoi visualizzare le festività del 2017")
+    } else {
+      $(".giorni ul").html("");
+      data = data.subtract(1, 'months');
+      month = month - 1;
+      listaMese(data);
+      holidayDate(data);
+    }
   });
 
   // Funzione per generare la lista dei giorni del mese
